@@ -19,7 +19,9 @@
 			<!-- /.panel-heading -->
 			<div class="panel-body">
 				<form>
-
+					<input type='hidden' name='pageNum' value='${cri.pageNum }'>
+					<input type='hidden' name='amount' value='${cri.amount }'>
+					
 					<div class="form-group">
 						<label>BNO</label> <input class="form-control" name="bno"
 							readonly="readonly" value='<c:out value="${board.bno }" />'>
@@ -70,19 +72,28 @@ $(document).ready(function(){
 	console.log(operation);
 	
 	if(operation === 'list'){
-		self.location = "/board/list";
+		//self.location = "/board/list";
+		formObj.attr("action", "/board/list")
+		.attr("method", "get");
+		
+		var pageNumTag = $("input[name='pageNum']").clone();
+		var amountTag = $("input[name='amount']").clone();
+		
+		formObj.empty();
+		formObj.append(pageNumTag);
+		formObj.append(amountTag);
+		
 	}else if(operation === 'remove'){
 		formObj.attr("action", "/board/remove")
 	 	.attr("method", "post");
-		formObj.submit(); 
 	}else if(operation === 'modify'){
 		formObj.attr("action", "/board/modify")
-	 	.attr("method", "post");
-		formObj.submit(); 
+	 	.attr("method", "post"); 
 	}
 	
-	})
-})
+	formObj.submit();
+	});
+});
 </script>
 
 <%@ include file="../includes/footer.jsp"%>

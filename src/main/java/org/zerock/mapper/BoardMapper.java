@@ -22,5 +22,9 @@ public interface BoardMapper {
 	
 	int update(BoardVO board);
 	
+	//페이징처리
 	List<BoardVO> getListWithPaging(Criteria cri);
+	
+	//Criteria 파라미터 받는 건 검색 조건을 Criteria 안에 추가할 거.
+	int getTotalCount(Criteria cri);
 }

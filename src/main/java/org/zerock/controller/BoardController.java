@@ -44,7 +44,7 @@ public class BoardController {
 		log.info(cri);
 		
 		model.addAttribute("list", service.getList(cri));
-		model.addAttribute("pageMaker", new PageDTO(cri, 123));
+		model.addAttribute("pageMaker", new PageDTO(cri, service.getTotal(cri) ));
 	}
 	
 	@GetMapping("/register")
@@ -76,24 +76,33 @@ public class BoardController {
 	}
 	
 	@PostMapping("/modify")
-	public String modify(BoardVO board, RedirectAttributes rttr) {
+	public String modify(BoardVO board, Criteria cri, RedirectAttributes rttr) {
 		
 		int count = service.modify(board);
 		
 		if(count == 1) {
 			rttr.addFlashAttribute("result", "success");
 		}
+		
+		rttr.addAttribute("pageNum", cri.getPageNum());
+		rttr.addAttribute("amount", cri.getAmount());
+		
 		return "redirect:/board/list";
 	}
 	
 	@PostMapping("/remove")
-	public String remove(@RequestParam("bno") Long bno, RedirectAttributes rttr) {
+	public String remove(@RequestParam("bno") Long bno, Criteria cri, RedirectAttributes rttr) {
 		
 		int count = service.remove(bno);
 		
 		if(count == 1) {
 			rttr.addFlashAttribute("result", "success");
 		}
+		
+		//리스트에서 보던 리스트페이지로 넘어가게 하게
+		rttr.addAttribute("pageNum", cri.getPageNum());
+		rttr.addAttribute("amount", cri.getAmount());
+		
 		return "redirect:/board/list";
 	}
 }
